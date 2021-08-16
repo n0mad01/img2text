@@ -1,0 +1,7 @@
+{
+  "name": "scantextwin",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
