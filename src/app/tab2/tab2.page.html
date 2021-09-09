@@ -10,6 +10,7 @@
 
   <ion-grid>
     <ion-row>
+      <!--
       <ion-col size="3" *ngFor="let photo of photoService.photos; index as position">
         <ion-img [src]="photo.webviewPath"></ion-img>
         <ion-fab-button size="small" color="dark" (click)="startRecognizeImage(photo.webviewPath)">
@@ -18,6 +19,10 @@
         <ion-fab-button size="small" color="light" (click)="removeImage(photo)">
           <ion-icon name="close-circle-outline"></ion-icon>
         </ion-fab-button>
+      </ion-col>
+      -->
+      <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
+        <ion-img [src]="photo.webviewPath" (click)="showActionSheet(photo, position)"></ion-img>
       </ion-col>
     </ion-row>
   </ion-grid>
