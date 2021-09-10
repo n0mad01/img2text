@@ -6,6 +6,8 @@ import * as Tesseract from 'tesseract.js'
 import { createWorker } from 'tesseract.js'
 import { Platform } from '@ionic/angular'
 import { Capacitor } from '@capacitor/core'
+import { SharedService } from './shared.service'
+import { Subscription } from 'rxjs'
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +17,26 @@ export class PhotoService {
   public worker: Tesseract.Worker
   private workerReady = false
   private ocrResult = ''
-  private captureResult = 0
+  private captureProgress: number = 0
+  private progressSubscription: Subscription
 
   public photos: Photo[] = []
   private PHOTO_STORAGE: string = 'photos'
 
   private platform: Platform
 
-  constructor(platform: Platform) {
+  constructor(platform: Platform,
+    private shared: SharedService) {
     this.platform = platform
     this.loadWorker()
+  }
+
+  async ngOnInit() {
+    this.progressSubscription = this.shared.progressMessage.subscribe(message => this.captureProgress = message)
+  }
+
+  async ngOnDestroy() {
+    this.progressSubscription.unsubscribe()
   }
 
   public async loadWorker() {
@@ -32,7 +44,8 @@ export class PhotoService {
       logger: progress => {
         console.log(progress)
         if (progress.status == 'recognizing text') {
-          this.captureResult = parseInt('' + progress.progress * 100)
+          this.captureProgress = parseInt('' + progress.progress * 100)
+          this.shared.updateProgress(this.captureProgress)
         }
       }
     })
@@ -48,6 +61,7 @@ export class PhotoService {
     console.log(result)
     this.ocrResult = result.data.text
     console.log(this.ocrResult)
+    this.shared.updateProgress(0)
   }
 
   public async addNewToGallery() {

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core'
-import { Photo, PhotoService } from '../services/photo.service'
 import { ActionSheetController } from '@ionic/angular'
+import { Subscription } from 'rxjs'
+
+import { Photo, PhotoService } from '../services/photo.service'
+import { SharedService } from '../services/shared.service'
 
 @Component({
   selector: 'app-tab2',
@@ -9,14 +12,22 @@ import { ActionSheetController } from '@ionic/angular'
 })
 export class Tab2Page {
 
+  private progressSubscription: Subscription
+  public captureProgress: number
+
   constructor(
+    private shared: SharedService,
     public photoService: PhotoService,
     public actionSheetController: ActionSheetController) {
-
   }
 
   async ngOnInit() {
     await this.photoService.loadSaved()
+    this.progressSubscription = this.shared.progressMessage.subscribe(message => this.captureProgress = message)
+  }
+  
+  async ngOnDestroy() {
+    this.progressSubscription.unsubscribe()
   }
 
   public addPhotoToGallery() {
