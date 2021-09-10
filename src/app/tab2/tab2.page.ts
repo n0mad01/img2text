@@ -16,8 +16,8 @@ import { SharedService } from '../services/shared.service'
 export class Tab2Page {
 
   private progressSubscription: Subscription
-  private ocrResultSubscription: Subscription
   public captureProgress: number
+  // private ocrResultSubscription: Subscription
   // private ocrResultComplete: Object = {}
 
   constructor(
@@ -35,7 +35,7 @@ export class Tab2Page {
 
   async ngOnDestroy() {
     this.progressSubscription.unsubscribe()
-    this.ocrResultSubscription.unsubscribe()
+    // this.ocrResultSubscription.unsubscribe()
   }
 
   public addPhotoToGallery() {

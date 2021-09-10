@@ -41,13 +41,13 @@ export class PhotoService {
 
   async ngOnDestroy() {
     this.progressSubscription.unsubscribe()
-    this.ocrResultSubscription.unsubscribe()
+    // this.ocrResultSubscription.unsubscribe()
   }
 
   public async loadWorker() {
     this.worker = createWorker({
       logger: progress => {
-        console.log(progress)
+        // console.log(progress)
         if (progress.status == 'recognizing text') {
           this.captureProgress = parseInt('' + progress.progress * 100)
           this.shared.updateProgress(this.captureProgress)
@@ -222,10 +222,10 @@ export class PhotoService {
     const modal = await this.modalController.create({
       component: OcrOutputModalPage,
       componentProps: {
-        'modalTitle': 'OCR image textextraction result',
+        'modalTitle': 'OCR Text Extraction',
         'closeModalButton': 'Close Modal',
         'captureProgress': this.captureProgress,
-        // 'ocrResultComplete': this.ocrResultComplete
+        'ocrResultComplete': this.ocrResultComplete
       }
     })
 

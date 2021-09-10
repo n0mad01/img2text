@@ -9,8 +9,9 @@
   <ion-grid>
     <ion-row>
       <ion-col text-center>
-        {{ captureProgress }}
+        <ion-progress-bar *ngIf="captureProgress > 0" value="{{ captureProgress }}"></ion-progress-bar>
         OUTPUT:
+        {{ ocrResultComplete.data.text }}
       </ion-col>
     </ion-row>
     <ion-row>

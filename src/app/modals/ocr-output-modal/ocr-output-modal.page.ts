@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 import { ModalController, NavParams } from '@ionic/angular'
+import { Subscription } from 'rxjs'
+
+import { SharedService } from '../../services/shared.service'
 
 @Component({
   selector: 'app-ocr-output-modal',
@@ -8,21 +11,30 @@ import { ModalController, NavParams } from '@ionic/angular'
 })
 export class OcrOutputModalPage implements OnInit {
 
-  public modalTitle: string
-  public closeModalButton: string
+  @Input() modalTitle: string
+  @Input() closeModalButton: string
+  // @Input() ocrResultComplete: any
+  // @Input() captureProgress: number
+
+  private progressSubscription: Subscription
+  private ocrResultSubscription: Subscription
+  
   public captureProgress: number
-  public ocrResultComplete: any
+  public ocrResultComplete: Object = {}
 
   constructor(
     private modalController: ModalController,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private shared: SharedService,
   ) { }
 
   ngOnInit() {
     // console.table(this.navParams)
-    this.modalTitle = this.navParams.data.modalTitle
-    this.captureProgress = this.navParams.data.captureProgress
-    this.ocrResultComplete = this.navParams.data.ocrResultComplete
+    // this.modalTitle = this.navParams.data.modalTitle
+    // this.captureProgress = this.navParams.data.captureProgress
+    // this.ocrResultComplete = this.navParams.data.ocrResultComplete
+    this.progressSubscription = this.shared.progressMessage.subscribe(message => this.captureProgress = message)
+    this.ocrResultSubscription = this.shared.anyMessage.subscribe(message => this.ocrResultComplete = message)
   }
 
   async closeModal() {
