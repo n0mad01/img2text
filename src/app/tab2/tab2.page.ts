@@ -16,7 +16,9 @@ import { OcrOutputModalPage } from '../modals/ocr-output-modal/ocr-output-modal.
 export class Tab2Page {
 
   private progressSubscription: Subscription
+  private ocrResultSubscription: Subscription
   public captureProgress: number
+  private ocrResultComplete: Object = {}
 
   constructor(
     private shared: SharedService,
@@ -28,10 +30,12 @@ export class Tab2Page {
   async ngOnInit() {
     await this.photoService.loadSaved()
     this.progressSubscription = this.shared.progressMessage.subscribe(message => this.captureProgress = message)
+    this.ocrResultSubscription = this.shared.anyMessage.subscribe(message => this.ocrResultComplete = message)
   }
 
   async ngOnDestroy() {
     this.progressSubscription.unsubscribe()
+    this.ocrResultSubscription.unsubscribe()
   }
 
   public addPhotoToGallery() {
@@ -47,10 +51,12 @@ export class Tab2Page {
   }
 
   public async openModal() {
+    // console.log(await this.ocrResultComplete)
     const modal = await this.modalController.create({
       component: OcrOutputModalPage,
       componentProps: {
-        "modalTitle": 'OCR image textextraction result'
+        'modalTitle': 'OCR image textextraction result',
+        'ocrResultComplete': this.ocrResultComplete
       }
     })
 

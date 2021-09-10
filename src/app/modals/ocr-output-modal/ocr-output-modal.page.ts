@@ -9,6 +9,7 @@ import { ModalController, NavParams } from '@ionic/angular'
 export class OcrOutputModalPage implements OnInit {
 
   public modalTitle: string
+  public ocrResultComplete: any
 
   constructor(
     private modalController: ModalController,
@@ -18,6 +19,7 @@ export class OcrOutputModalPage implements OnInit {
   ngOnInit() {
     // console.table(this.navParams)
     this.modalTitle = this.navParams.data.modalTitle
+    this.ocrResultComplete = this.navParams.data.ocrResultComplete
   }
 
   async closeModal() {

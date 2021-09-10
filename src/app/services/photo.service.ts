@@ -14,16 +14,16 @@ import { Subscription } from 'rxjs'
 })
 export class PhotoService {
 
-  public worker: Tesseract.Worker
-  private workerReady = false
-  private ocrResult = ''
+  private platform: Platform
+  private photos: Photo[] = []
+  private PHOTO_STORAGE: string = 'photos'
+  private worker: Tesseract.Worker
+  private workerReady: boolean = false
+  private ocrResult: string = ''
+  private ocrResultComplete: Object = {}
   private captureProgress: number = 0
   private progressSubscription: Subscription
-
-  public photos: Photo[] = []
-  private PHOTO_STORAGE: string = 'photos'
-
-  private platform: Platform
+  private ocrResultSubscription: Subscription
 
   constructor(platform: Platform,
     private shared: SharedService) {
@@ -33,10 +33,12 @@ export class PhotoService {
 
   async ngOnInit() {
     this.progressSubscription = this.shared.progressMessage.subscribe(message => this.captureProgress = message)
+    this.ocrResultSubscription = this.shared.anyMessage.subscribe(message => this.ocrResultComplete = message)
   }
 
   async ngOnDestroy() {
     this.progressSubscription.unsubscribe()
+    this.ocrResultSubscription.unsubscribe()
   }
 
   public async loadWorker() {
@@ -56,12 +58,13 @@ export class PhotoService {
   }
 
   public async recognizeImage(path) {
-    console.log('recog init')
+    // console.log('recog init')
     const result = await this.worker.recognize(path)
-    console.log(result)
-    this.ocrResult = result.data.text
-    console.log(this.ocrResult)
+    // console.log(result)
+    // this.ocrResult = result.data.text
+    // console.log(this.ocrResult)
     this.shared.updateProgress(0) 
+    this.shared.updateAny(result)
   }
 
   public async addNewToGallery() {
