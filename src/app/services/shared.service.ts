@@ -6,19 +6,26 @@ import { BehaviorSubject } from 'rxjs'
 })
 export class SharedService {
 
-  private messageSource = new BehaviorSubject('init')
-  currentMessage = this.messageSource.asObservable()
+  private textSource = new BehaviorSubject('init')
+  textMessage = this.textSource.asObservable()
 
   private progressSource = new BehaviorSubject(0)
   progressMessage = this.progressSource.asObservable()
 
-  constructor() { }
+  private progressAny = new BehaviorSubject({})
+  anyMessage = this.progressAny.asObservable()
 
-  changeMessage(message: string) {
-    this.messageSource.next(message)
+  constructor() {}
+
+  updateTextMessage(message: string) {
+    this.textSource.next(message)
   }
 
   updateProgress(message: number) {
     this.progressSource.next(message)
+  }
+
+  updateAny(message: any) {
+    this.progressAny.next(message)
   }
 }

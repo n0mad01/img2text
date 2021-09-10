@@ -61,7 +61,7 @@ export class PhotoService {
     console.log(result)
     this.ocrResult = result.data.text
     console.log(this.ocrResult)
-    this.shared.updateProgress(0)
+    this.shared.updateProgress(0) 
   }
 
   public async addNewToGallery() {
