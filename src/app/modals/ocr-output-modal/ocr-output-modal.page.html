@@ -23,6 +23,7 @@
     </ion-row>
     <ion-row>
       <ion-col text-center>
+        <ion-button *ngIf="ocrResultComplete.data && ocrResultComplete.data.text" (click)="copyTextToClipboard(ocrResultComplete.data.text)">Copy Text to Clipboard</ion-button>
         <ion-button (click)="closeModal()">{{ closeModalButton }}</ion-button>
       </ion-col>
     </ion-row>

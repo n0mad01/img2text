@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { ModalController, NavParams } from '@ionic/angular'
 import { Subscription } from 'rxjs'
+import { Clipboard } from '@ionic-native/clipboard/ngx'
 
 import { SharedService } from '../../services/shared.service'
 
@@ -26,6 +27,7 @@ export class OcrOutputModalPage implements OnInit {
     private modalController: ModalController,
     private navParams: NavParams,
     private shared: SharedService,
+    private clipboard: Clipboard,
   ) { }
 
   ngOnInit() {
@@ -40,6 +42,11 @@ export class OcrOutputModalPage implements OnInit {
   async closeModal() {
     const onClosedData: string = 'modal closing'
     await this.modalController.dismiss(onClosedData)
+  }
+
+  public copyTextToClipboard(text) {
+    // console.log(text)
+    this.clipboard.copy(text)
   }
 
 }
