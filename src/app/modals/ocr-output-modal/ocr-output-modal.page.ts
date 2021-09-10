@@ -18,7 +18,7 @@ export class OcrOutputModalPage implements OnInit {
 
   private progressSubscription: Subscription
   private ocrResultSubscription: Subscription
-  
+
   public captureProgress: number
   public ocrResultComplete: Object = {}
 

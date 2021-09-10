@@ -44,6 +44,9 @@ export class PhotoService {
     // this.ocrResultSubscription.unsubscribe()
   }
 
+  /**
+   *  Text recognition operations
+   */
   public async loadWorker() {
     this.worker = createWorker({
       logger: progress => {
@@ -61,14 +64,12 @@ export class PhotoService {
   }
 
   public async recognizeImage(path) {
-    // console.log('recog init')
     this.openModal()
     const result = await this.worker.recognize(path)
     // console.log(result)
     // this.ocrResult = result.data.text
-    // console.log(this.ocrResult)
-    this.shared.updateProgress(0)
     this.shared.updateAny(result)
+    this.shared.updateProgress(0)
   }
 
   /**
@@ -233,6 +234,7 @@ export class PhotoService {
       if (dataReturned !== null) {
         // console.log('modal close', dataReturned)
         // this.dataReturned = dataReturned.data
+        this.shared.updateAny({})
       }
     })
 
