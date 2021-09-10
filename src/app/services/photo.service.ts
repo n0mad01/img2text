@@ -8,6 +8,8 @@ import { Platform } from '@ionic/angular'
 import { Capacitor } from '@capacitor/core'
 import { SharedService } from './shared.service'
 import { Subscription } from 'rxjs'
+import { ModalController } from '@ionic/angular'
+import { OcrOutputModalPage } from '../modals/ocr-output-modal/ocr-output-modal.page'
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +28,8 @@ export class PhotoService {
   private ocrResultSubscription: Subscription
 
   constructor(platform: Platform,
-    private shared: SharedService) {
+    private shared: SharedService,
+    public modalController: ModalController) {
     this.platform = platform
     this.loadWorker()
   }
@@ -59,14 +62,18 @@ export class PhotoService {
 
   public async recognizeImage(path) {
     // console.log('recog init')
+    this.openModal()
     const result = await this.worker.recognize(path)
     // console.log(result)
     // this.ocrResult = result.data.text
     // console.log(this.ocrResult)
-    this.shared.updateProgress(0) 
+    this.shared.updateProgress(0)
     this.shared.updateAny(result)
   }
 
+  /**
+   *  Image operations
+   */
   public async addNewToGallery() {
     // Take a photo
     const capturedPhoto = await Camera.getPhoto({
@@ -107,7 +114,6 @@ export class PhotoService {
   }
 
   public async removePicture(to_delete) {
-    console.log('DEL', to_delete)
 
     const photoList = await Storage.get({ key: this.PHOTO_STORAGE })
     let photos = JSON.parse(photoList.value) || []
@@ -117,8 +123,6 @@ export class PhotoService {
         photos.splice(i, 1)
       }
     })
-
-    console.log(photos)
 
     await Storage.set({
       key: this.PHOTO_STORAGE,
@@ -131,7 +135,6 @@ export class PhotoService {
       path: to_delete.filepath,
       directory: Directory.Data
     })
-    console.log(fileDeleted)
   }
 
   private async savePicture(cameraPhoto) {
@@ -190,16 +193,15 @@ export class PhotoService {
       // Read the file into base64 format
       const file = await Filesystem.readFile({
         path: cameraPhoto.path
-      });
-
-      return file.data;
+      })
+      return file.data
     }
     else {
       // Fetch the photo, read as a blob, then convert to base64 format
       const response = await fetch(cameraPhoto.webPath);
       const blob = await response.blob();
 
-      return await this.convertBlobToBase64(blob) as string;
+      return await this.convertBlobToBase64(blob) as string
     }
   }
 
@@ -212,9 +214,33 @@ export class PhotoService {
     reader.readAsDataURL(blob)
   })
 
+  /**
+   *  view operations
+   */
+  public async openModal() {
+    // console.log(await this.ocrResultComplete)
+    const modal = await this.modalController.create({
+      component: OcrOutputModalPage,
+      componentProps: {
+        'modalTitle': 'OCR image textextraction result',
+        'closeModalButton': 'Close Modal',
+        'captureProgress': this.captureProgress,
+        // 'ocrResultComplete': this.ocrResultComplete
+      }
+    })
+
+    modal.onDidDismiss().then((dataReturned) => {
+      if (dataReturned !== null) {
+        // console.log('modal close', dataReturned)
+        // this.dataReturned = dataReturned.data
+      }
+    })
+
+    return await modal.present()
+  }
 }
 
 export interface Photo {
-  filepath: string;
-  webviewPath: string;
+  filepath: string
+  webviewPath: string
 }

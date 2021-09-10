@@ -9,6 +9,8 @@ import { ModalController, NavParams } from '@ionic/angular'
 export class OcrOutputModalPage implements OnInit {
 
   public modalTitle: string
+  public closeModalButton: string
+  public captureProgress: number
   public ocrResultComplete: any
 
   constructor(
@@ -19,6 +21,7 @@ export class OcrOutputModalPage implements OnInit {
   ngOnInit() {
     // console.table(this.navParams)
     this.modalTitle = this.navParams.data.modalTitle
+    this.captureProgress = this.navParams.data.captureProgress
     this.ocrResultComplete = this.navParams.data.ocrResultComplete
   }
 

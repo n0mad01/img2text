@@ -9,12 +9,13 @@
   <ion-grid>
     <ion-row>
       <ion-col text-center>
+        {{ captureProgress }}
         OUTPUT:
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col text-center>
-        <ion-button (click)="closeModal()">Close Modal</ion-button>
+        <ion-button (click)="closeModal()">{{ closeModalButton }}</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core'
 import { ActionSheetController } from '@ionic/angular'
 import { Subscription } from 'rxjs'
-import { ModalController } from '@ionic/angular'
+// import { ModalController } from '@ionic/angular'
 
 import { Photo, PhotoService } from '../services/photo.service'
 import { SharedService } from '../services/shared.service'
-import { OcrOutputModalPage } from '../modals/ocr-output-modal/ocr-output-modal.page'
+// import { OcrOutputModalPage } from '../modals/ocr-output-modal/ocr-output-modal.page'
 
 
 @Component({
@@ -18,19 +18,19 @@ export class Tab2Page {
   private progressSubscription: Subscription
   private ocrResultSubscription: Subscription
   public captureProgress: number
-  private ocrResultComplete: Object = {}
+  // private ocrResultComplete: Object = {}
 
   constructor(
     private shared: SharedService,
     public photoService: PhotoService,
-    public modalController: ModalController,
+    // public modalController: ModalController,
     public actionSheetController: ActionSheetController) {
   }
 
   async ngOnInit() {
     await this.photoService.loadSaved()
     this.progressSubscription = this.shared.progressMessage.subscribe(message => this.captureProgress = message)
-    this.ocrResultSubscription = this.shared.anyMessage.subscribe(message => this.ocrResultComplete = message)
+    // this.ocrResultSubscription = this.shared.anyMessage.subscribe(message => this.ocrResultComplete = message)
   }
 
   async ngOnDestroy() {
@@ -50,13 +50,14 @@ export class Tab2Page {
     this.photoService.removePicture(photo)
   }
 
+  /*
   public async openModal() {
     // console.log(await this.ocrResultComplete)
     const modal = await this.modalController.create({
       component: OcrOutputModalPage,
       componentProps: {
         'modalTitle': 'OCR image textextraction result',
-        'ocrResultComplete': this.ocrResultComplete
+        // 'ocrResultComplete': this.ocrResultComplete
       }
     })
 
@@ -69,6 +70,7 @@ export class Tab2Page {
 
     return await modal.present()
   }
+  */
 
   public async showActionSheet(photo: Photo, position: number) {
     const actionSheet = await this.actionSheetController.create({
@@ -78,7 +80,7 @@ export class Tab2Page {
         role: 'action',
         icon: 'cube-outline',
         handler: () => {
-          this.openModal()
+          // this.openModal()
           this.photoService.recognizeImage(photo.webviewPath)
         }
       }, {
