@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core'
-import { Camera, CameraResultType, CameraSource/*, Photo */ } from '@capacitor/camera'
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera'
 import { Filesystem, Directory } from '@capacitor/filesystem'
-import { Storage } from '@capacitor/storage'
-import * as Tesseract from 'tesseract.js'
-import { createWorker } from 'tesseract.js'
-import { Platform } from '@ionic/angular'
-import { Capacitor } from '@capacitor/core'
-import { SharedService } from './shared.service'
-import { Subscription } from 'rxjs'
 import { ModalController } from '@ionic/angular'
+import { Storage } from '@capacitor/storage'
+import { Capacitor } from '@capacitor/core'
+import { createWorker } from 'tesseract.js'
+import * as Tesseract from 'tesseract.js'
+import { Platform } from '@ionic/angular'
+import { Subscription } from 'rxjs'
+
+import { SharedService } from './shared.service'
 import { OcrOutputModalPage } from '../modals/ocr-output-modal/ocr-output-modal.page'
 
 @Injectable({
@@ -25,7 +26,6 @@ export class PhotoService {
   private ocrResultComplete: Object = {}
   private captureProgress: number = 0
   private progressSubscription: Subscription
-  private ocrResultSubscription: Subscription
 
   constructor(platform: Platform,
     private shared: SharedService,
@@ -36,12 +36,10 @@ export class PhotoService {
 
   async ngOnInit() {
     this.progressSubscription = this.shared.progressMessage.subscribe(message => this.captureProgress = message)
-    this.ocrResultSubscription = this.shared.anyMessage.subscribe(message => this.ocrResultComplete = message)
   }
 
   async ngOnDestroy() {
     this.progressSubscription.unsubscribe()
-    // this.ocrResultSubscription.unsubscribe()
   }
 
   /**
@@ -50,7 +48,6 @@ export class PhotoService {
   public async loadWorker() {
     this.worker = createWorker({
       logger: progress => {
-        // console.log(progress)
         if (progress.status == 'recognizing text') {
           this.captureProgress = parseInt('' + progress.progress * 100)
           this.shared.updateProgress(this.captureProgress)
@@ -191,14 +188,14 @@ export class PhotoService {
   private async readAsBase64(cameraPhoto) {
     // "hybrid" will detect Cordova or Capacitor
     if (this.platform.is('hybrid')) {
-      // Read the file into base64 format
+      // Read the file in base64 format
       const file = await Filesystem.readFile({
         path: cameraPhoto.path
       })
       return file.data
     }
     else {
-      // Fetch the photo, read as a blob, then convert to base64 format
+      // Fetch photo, read as blob, then convert to base64
       const response = await fetch(cameraPhoto.webPath);
       const blob = await response.blob();
 

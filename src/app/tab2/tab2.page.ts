@@ -1,12 +1,9 @@
 import { Component } from '@angular/core'
 import { ActionSheetController } from '@ionic/angular'
 import { Subscription } from 'rxjs'
-// import { ModalController } from '@ionic/angular'
 
 import { Photo, PhotoService } from '../services/photo.service'
 import { SharedService } from '../services/shared.service'
-// import { OcrOutputModalPage } from '../modals/ocr-output-modal/ocr-output-modal.page'
-
 
 @Component({
   selector: 'app-tab2',
@@ -17,60 +14,29 @@ export class Tab2Page {
 
   private progressSubscription: Subscription
   public captureProgress: number
-  // private ocrResultSubscription: Subscription
-  // private ocrResultComplete: Object = {}
 
   constructor(
     private shared: SharedService,
     public photoService: PhotoService,
-    // public modalController: ModalController,
     public actionSheetController: ActionSheetController) {
   }
 
   async ngOnInit() {
     await this.photoService.loadSaved()
     this.progressSubscription = this.shared.progressMessage.subscribe(message => this.captureProgress = message)
-    // this.ocrResultSubscription = this.shared.anyMessage.subscribe(message => this.ocrResultComplete = message)
   }
 
   async ngOnDestroy() {
     this.progressSubscription.unsubscribe()
-    // this.ocrResultSubscription.unsubscribe()
   }
 
   public addPhotoToGallery() {
     this.photoService.addNewToGallery()
   }
 
-  /*public startRecognizeImage(path) {
-    this.photoService.recognizeImage(path)
-  }*/
-
   public removeImage(photo) {
     this.photoService.removePicture(photo)
   }
-
-  /*
-  public async openModal() {
-    // console.log(await this.ocrResultComplete)
-    const modal = await this.modalController.create({
-      component: OcrOutputModalPage,
-      componentProps: {
-        'modalTitle': 'OCR image textextraction result',
-        // 'ocrResultComplete': this.ocrResultComplete
-      }
-    })
-
-    modal.onDidDismiss().then((dataReturned) => {
-      if (dataReturned !== null) {
-        // console.log('modal close', dataReturned)
-        // this.dataReturned = dataReturned.data
-      }
-    })
-
-    return await modal.present()
-  }
-  */
 
   public async showActionSheet(photo: Photo, position: number) {
     const actionSheet = await this.actionSheetController.create({
