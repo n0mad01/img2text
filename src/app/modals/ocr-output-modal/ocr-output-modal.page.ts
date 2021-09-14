@@ -3,6 +3,7 @@ import { Clipboard } from '@ionic-native/clipboard/ngx'
 import { ModalController } from '@ionic/angular'
 import { Subscription } from 'rxjs'
 
+import { PhotoService } from '../../services/photo.service'
 import { SharedService } from '../../services/shared.service'
 
 @Component({
@@ -25,6 +26,7 @@ export class OcrOutputModalPage implements OnInit {
     private modalController: ModalController,
     private shared: SharedService,
     private clipboard: Clipboard,
+    public photoService: PhotoService,
   ) {}
 
   async ngOnInit() {
@@ -38,6 +40,7 @@ export class OcrOutputModalPage implements OnInit {
   }
 
   async closeModal() {
+    this.photoService.cancelOCRWorker()
     const onClosedData: string = 'modal closing'
     await this.modalController.dismiss(onClosedData)
   }

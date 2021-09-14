@@ -67,7 +67,12 @@ export class PhotoService {
     // console.log(result)
     // this.ocrResult = result.data.text
     this.shared.updateAny(result)
-    this.shared.updateProgress(0)
+    // this.shared.updateProgress(0)
+  }
+
+  public async cancelOCRWorker() {
+    await this.worker.terminate()
+    await this.loadWorker()
   }
 
   /**
