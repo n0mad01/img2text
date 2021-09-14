@@ -49,8 +49,7 @@ export class PhotoService {
     this.worker = createWorker({
       logger: progress => {
         if (progress.status == 'recognizing text') {
-          this.captureProgress = parseInt('' + progress.progress * 100)
-          console.log(this.captureProgress)
+          this.captureProgress = progress.progress.toFixed(2)
           this.shared.updateProgress(this.captureProgress)
         }
       }
