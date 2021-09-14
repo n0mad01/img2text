@@ -1,6 +1,11 @@
-<ion-header>
+<ion-header translucent>
   <ion-toolbar color="dark">
     <ion-title>{{ modalTitle }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -11,19 +16,16 @@
       <ion-col text-center>
         <ion-progress-bar *ngIf="captureProgress > 0" value="{{ captureProgress }}"></ion-progress-bar>
         <ion-item>
-          <ion-textarea
-            *ngIf="ocrResultComplete.data && ocrResultComplete.data.text; else notfound"
-            autoGrow
-            disabled
-            readonly
-            value="{{ ocrResultComplete.data.text }}">
+          <ion-textarea *ngIf="ocrResultComplete.data && ocrResultComplete.data.text; else notfound" autoGrow disabled
+            readonly value="{{ ocrResultComplete.data.text }}">
           </ion-textarea>
         </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col text-center>
-        <ion-button *ngIf="ocrResultComplete.data && ocrResultComplete.data.text" (click)="copyTextToClipboard(ocrResultComplete.data.text)">Copy Text to Clipboard</ion-button>
+        <ion-button *ngIf="ocrResultComplete.data && ocrResultComplete.data.text"
+          (click)="copyTextToClipboard(ocrResultComplete.data.text)">Copy Text to Clipboard</ion-button>
         <ion-button (click)="closeModal()">{{ closeModalButton }}</ion-button>
       </ion-col>
     </ion-row>

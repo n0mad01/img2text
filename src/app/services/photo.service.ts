@@ -50,13 +50,14 @@ export class PhotoService {
       logger: progress => {
         if (progress.status == 'recognizing text') {
           this.captureProgress = parseInt('' + progress.progress * 100)
+          console.log(this.captureProgress)
           this.shared.updateProgress(this.captureProgress)
         }
       }
     })
     await this.worker.load()
-    await this.worker.loadLanguage('eng')
-    await this.worker.initialize('eng')
+    await this.worker.loadLanguage('deu')
+    await this.worker.initialize('deu')
     this.workerReady = true
   }
 
@@ -75,9 +76,11 @@ export class PhotoService {
   public async addNewToGallery() {
     // Take a photo
     const capturedPhoto = await Camera.getPhoto({
-      resultType: CameraResultType.Uri,
+      quality: 5,
       source: CameraSource.Camera,
-      quality: 100
+      resultType: CameraResultType.Uri,
+      // correctOrientation: true,
+      // width: 400,
     })
 
     const savedImageFile = await this.savePicture(capturedPhoto)
