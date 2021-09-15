@@ -20,10 +20,9 @@ export class Tab3Page {
     if (this.options['tesseractlanguage'] === undefined) {
       this.options['tesseractlanguage'] = 'eng'
     }
-
     this.selectedLanguage = this.options['tesseractlanguage']
   }
-  
+
 
   public async languageSelected(lang) {
     this.options = { 'tesseractlanguage' : this.selectedLanguage }

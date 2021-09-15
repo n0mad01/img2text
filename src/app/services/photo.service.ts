@@ -19,7 +19,10 @@ export class PhotoService {
 
   private platform: Platform
   private photos: Photo[] = []
-  private PHOTO_STORAGE: string = 'photos'
+  private STORAGE_PHOTOS: string = 'photos'
+  private STORAGE_OPTIONS: string = 'options'
+  private selectedLanguage: string
+  private options: Object = {}
   private worker: Tesseract.Worker
   private workerReady: boolean = false
   private ocrResult: string = ''
@@ -31,7 +34,8 @@ export class PhotoService {
     private shared: SharedService,
     public modalController: ModalController) {
     this.platform = platform
-    this.loadWorker()
+    // this.loadOptions()
+    // this.loadWorker()
   }
 
   async ngOnInit() {
@@ -42,10 +46,23 @@ export class PhotoService {
     this.progressSubscription.unsubscribe()
   }
 
+  private async loadOptions() {
+    // console.log('loadOptions')
+    const options = await Storage.get({ key: this.STORAGE_OPTIONS })
+    this.options = JSON.parse(options.value) || {}
+    if (this.options['tesseractlanguage'] === undefined) {
+      this.options['tesseractlanguage'] = 'eng'
+    }
+    this.selectedLanguage = this.options['tesseractlanguage']
+  }
+
   /**
    *  Text recognition operations
    */
   public async loadWorker() {
+
+    await this.loadOptions()
+    // console.log('loadWorker')
     this.worker = createWorker({
       logger: progress => {
         if (progress.status == 'recognizing text') {
@@ -55,12 +72,16 @@ export class PhotoService {
       }
     })
     await this.worker.load()
-    await this.worker.loadLanguage('deu')
-    await this.worker.initialize('deu')
+    await this.worker.loadLanguage(this.selectedLanguage)
+    await this.worker.initialize(this.selectedLanguage)
     this.workerReady = true
   }
 
   public async recognizeImage(path) {
+
+    await this.cancelOCRWorker()
+
+    console.log('this.selectedLanguage', this.selectedLanguage)
     this.openModal()
     const result = await this.worker.recognize(path)
     // console.log(result)
@@ -70,7 +91,9 @@ export class PhotoService {
   }
 
   public async cancelOCRWorker() {
-    await this.worker.terminate()
+    if(typeof this.worker !== 'undefined') {
+      await this.worker.terminate()
+    }
     await this.loadWorker()
   }
 
@@ -90,14 +113,14 @@ export class PhotoService {
     this.photos.unshift(savedImageFile)
 
     await Storage.set({
-      key: this.PHOTO_STORAGE,
+      key: this.STORAGE_PHOTOS,
       value: JSON.stringify(this.photos)
     })
   }
 
   public async loadSaved() {
     // Retrieve cached photo array data
-    const photoList = await Storage.get({ key: this.PHOTO_STORAGE })
+    const photoList = await Storage.get({ key: this.STORAGE_PHOTOS })
     this.photos = JSON.parse(photoList.value) || []
 
     // Easiest way to detect when running on the web:
@@ -119,7 +142,7 @@ export class PhotoService {
 
   public async removePicture(to_delete) {
 
-    const photoList = await Storage.get({ key: this.PHOTO_STORAGE })
+    const photoList = await Storage.get({ key: this.STORAGE_PHOTOS })
     let photos = JSON.parse(photoList.value) || []
 
     photos.forEach(function (photo, i) {
@@ -129,7 +152,7 @@ export class PhotoService {
     })
 
     await Storage.set({
-      key: this.PHOTO_STORAGE,
+      key: this.STORAGE_PHOTOS,
       value: JSON.stringify(photos)
     })
 
@@ -177,7 +200,7 @@ export class PhotoService {
 
     // Update photos array cache by overwriting the existing photo array
     await Storage.set({
-      key: this.PHOTO_STORAGE,
+      key: this.STORAGE_PHOTOS,
       value: JSON.stringify(this.photos)
     });
 
