@@ -78,7 +78,6 @@ export class PhotoService {
    *  Image operations
    */
   public async addNewToGallery() {
-    // Take a photo
     const capturedPhoto = await Camera.getPhoto({
       quality: 5,
       source: CameraSource.Camera,
@@ -90,7 +89,7 @@ export class PhotoService {
     const savedImageFile = await this.savePicture(capturedPhoto)
     this.photos.unshift(savedImageFile)
 
-    Storage.set({
+    await Storage.set({
       key: this.PHOTO_STORAGE,
       value: JSON.stringify(this.photos)
     })
@@ -177,7 +176,7 @@ export class PhotoService {
     this.photos.splice(position, 1)
 
     // Update photos array cache by overwriting the existing photo array
-    Storage.set({
+    await Storage.set({
       key: this.PHOTO_STORAGE,
       value: JSON.stringify(this.photos)
     });
