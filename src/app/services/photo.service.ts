@@ -79,10 +79,10 @@ export class PhotoService {
 
   public async recognizeImage(path) {
 
-    await this.cancelOCRWorker()
-
-    console.log('this.selectedLanguage', this.selectedLanguage)
     this.openModal()
+
+    await this.cancelOCRWorker()
+    // console.log('this.selectedLanguage', this.selectedLanguage)
     const result = await this.worker.recognize(path)
     // console.log(result)
     // this.ocrResult = result.data.text

@@ -24,11 +24,9 @@
     </ion-row>
     <ion-row>
       <ion-col text-center>
-        <ion-button *ngIf="ocrResultComplete.data && ocrResultComplete.data.text"
+        <ion-button expand="block" size="large" color="primary" *ngIf="ocrResultComplete.data && ocrResultComplete.data.text"
         (click)="copyTextToClipboard(ocrResultComplete.data.text)">Copy Text to Clipboard</ion-button>
-        <!--
-          <ion-button (click)="closeModal()">{{ closeModalButton }}</ion-button>
-        -->
+        <ion-button expand="block" size="large" color="dark" (click)="closeModal()">Close</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
