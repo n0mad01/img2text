@@ -18,7 +18,7 @@ import { OcrOutputModalPage } from '../modals/ocr-output-modal/ocr-output-modal.
 export class PhotoService {
 
   private platform: Platform
-  private photos: Photo[] = []
+  public photos: Photo[] = []
   private STORAGE_PHOTOS: string = 'photos'
   private STORAGE_OPTIONS: string = 'options'
   private selectedLanguage: string

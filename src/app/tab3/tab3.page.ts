@@ -24,7 +24,7 @@ export class Tab3Page {
   }
 
 
-  public async languageSelected(lang) {
+  public async languageSelected() {
     this.options = { 'tesseractlanguage' : this.selectedLanguage }
     await Storage.set({
       key: this.STORAGE_OPTIONS,
