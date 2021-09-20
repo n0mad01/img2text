@@ -17,7 +17,7 @@ export class OcrOutputModalPage implements OnInit {
   @Input() closeModalButton: string
 
   public captureProgress: number
-  public ocrResultComplete: Object = {}
+  public ocrResultComplete: any = {}
   
   private progressSubscription: Subscription
   private ocrResultSubscription: Subscription
