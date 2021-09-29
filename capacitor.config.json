@@ -1,5 +1,5 @@
 {
-  "appId": "io.ionic.starter",
+  "appId": "io.ionic.img2text",
   "appName": "Img2Text",
   "webDir": "www",
   "bundledWebRuntime": false

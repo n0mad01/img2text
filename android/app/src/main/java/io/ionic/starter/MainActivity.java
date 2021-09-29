@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package io.ionic.img2text;
 
 import com.getcapacitor.BridgeActivity;
 
