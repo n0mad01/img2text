@@ -47,7 +47,6 @@ export class PhotoService {
   }
 
   private async loadOptions() {
-    // console.log('loadOptions')
     const options = await Storage.get({ key: this.STORAGE_OPTIONS })
     this.options = JSON.parse(options.value) || {}
     if (this.options['tesseractlanguage'] === undefined) {
@@ -91,7 +90,7 @@ export class PhotoService {
   }
 
   public async cancelOCRWorker() {
-    if(typeof this.worker !== 'undefined') {
+    if (typeof this.worker !== 'undefined') {
       await this.worker.terminate()
     }
     await this.loadWorker()
@@ -105,8 +104,9 @@ export class PhotoService {
       quality: 5,
       source: CameraSource.Camera,
       resultType: CameraResultType.Uri,
-      // correctOrientation: true,
-      // width: 400,
+    }).catch((e) => {
+      // error or taking picture cancelled
+      throw new Error(e)
     })
 
     const savedImageFile = await this.savePicture(capturedPhoto)
@@ -123,8 +123,7 @@ export class PhotoService {
     const photoList = await Storage.get({ key: this.STORAGE_PHOTOS })
     this.photos = JSON.parse(photoList.value) || []
 
-    // Easiest way to detect when running on the web:
-    // “when the platform is NOT hybrid, do this”
+    // when the platform is NOT hybrid, do this:
     if (!this.platform.is('hybrid')) {
       // Display the photo by reading into base64 format
       for (let photo of this.photos) {
