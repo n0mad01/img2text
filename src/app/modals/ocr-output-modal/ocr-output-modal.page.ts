@@ -40,7 +40,6 @@ export class OcrOutputModalPage implements OnInit {
   }
 
   async closeModal() {
-    this.photoService.cancelOCRWorker()
     const onClosedData: string = 'modal closing'
     await this.modalController.dismiss(onClosedData)
   }

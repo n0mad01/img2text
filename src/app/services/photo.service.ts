@@ -38,8 +38,6 @@ export class PhotoService {
     public loadingController: LoadingController,
     public modalController: ModalController) {
     this.platform = platform
-    // this.loadOptions()
-    // this.loadWorker()
 
     if (!this.workerReady) {
       this.cancelOCRWorker()
@@ -69,7 +67,6 @@ export class PhotoService {
   public async loadWorker() {
 
     await this.loadOptions()
-    // console.log('loadWorker')
     this.worker = createWorker({
       logger: progress => {
         if (progress.status == 'recognizing text') {
@@ -280,6 +277,7 @@ export class PhotoService {
 
   private async initLoadingWait() {
     this.loadingWait = await this.loadingController.create({
+      spinner: 'crescent',
       message: 'Please wait...'
     })
     await this.loadingWait.present()
