@@ -16,16 +16,17 @@
       <ion-col text-center>
         <ion-progress-bar *ngIf="captureProgress > 0" value="{{ captureProgress }}"></ion-progress-bar>
         <ion-item>
-          <ion-textarea *ngIf="ocrResultComplete.data && ocrResultComplete.data.text" autoGrow disabled
-            readonly value="{{ ocrResultComplete.data.text }}">
+          <ion-textarea *ngIf="ocrResultComplete.data && ocrResultComplete.data.text" autoGrow disabled readonly
+            value="{{ ocrResultComplete.data.text }}">
           </ion-textarea>
         </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col text-center>
-        <ion-button expand="block" size="large" color="primary" *ngIf="ocrResultComplete.data && ocrResultComplete.data.text"
-        (click)="copyTextToClipboard(ocrResultComplete.data.text)">Copy Text to Clipboard</ion-button>
+        <ion-button expand="block" size="large" color="primary"
+          *ngIf="ocrResultComplete.data && ocrResultComplete.data.text"
+          (click)="copyTextToClipboard(ocrResultComplete.data.text)">Copy Text to Clipboard</ion-button>
         <ion-button expand="block" size="large" color="dark" (click)="closeModal()">Close</ion-button>
       </ion-col>
     </ion-row>

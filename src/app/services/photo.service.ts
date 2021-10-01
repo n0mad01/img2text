@@ -17,14 +17,15 @@ import { OcrOutputModalPage } from '../modals/ocr-output-modal/ocr-output-modal.
 })
 export class PhotoService {
 
-  private platform: Platform
   public photos: Photo[] = []
+  public workerReady: boolean = false
+
+  private platform: Platform
   private STORAGE_PHOTOS: string = 'photos'
   private STORAGE_OPTIONS: string = 'options'
   private selectedLanguage: string
   private options: Object = {}
   private worker: Tesseract.Worker
-  private workerReady: boolean = false
   private ocrResult: string = ''
   private ocrResultComplete: Object = {}
   private captureProgress: number = 0
@@ -36,6 +37,10 @@ export class PhotoService {
     this.platform = platform
     // this.loadOptions()
     // this.loadWorker()
+
+    if (! this.workerReady) {
+      this.cancelOCRWorker()
+    }
   }
 
   async ngOnInit() {
@@ -80,7 +85,9 @@ export class PhotoService {
 
     this.openModal()
 
-    await this.cancelOCRWorker()
+    if (! this.workerReady) {
+      await this.cancelOCRWorker()
+    }
     // console.log('this.selectedLanguage', this.selectedLanguage)
     const result = await this.worker.recognize(path)
     // console.log(result)
@@ -248,7 +255,7 @@ export class PhotoService {
     const modal = await this.modalController.create({
       component: OcrOutputModalPage,
       componentProps: {
-        'modalTitle': 'OCR Text Extraction',
+        'modalTitle': 'Text extraction',
         'closeModalButton': 'Close Modal',
         'captureProgress': this.captureProgress,
         'ocrResultComplete': this.ocrResultComplete
