@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core'
+import { LoadingController } from '@ionic/angular'
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera'
 import { Filesystem, Directory } from '@capacitor/filesystem'
 import { ModalController } from '@ionic/angular'
@@ -30,15 +31,17 @@ export class PhotoService {
   private ocrResultComplete: Object = {}
   private captureProgress: number = 0
   private progressSubscription: Subscription
+  private loadingWait
 
   constructor(platform: Platform,
     private shared: SharedService,
+    public loadingController: LoadingController,
     public modalController: ModalController) {
     this.platform = platform
     // this.loadOptions()
     // this.loadWorker()
 
-    if (! this.workerReady) {
+    if (!this.workerReady) {
       this.cancelOCRWorker()
     }
   }
@@ -85,7 +88,7 @@ export class PhotoService {
 
     this.openModal()
 
-    if (! this.workerReady) {
+    if (!this.workerReady) {
       await this.cancelOCRWorker()
     }
     // console.log('this.selectedLanguage', this.selectedLanguage)
@@ -97,10 +100,12 @@ export class PhotoService {
   }
 
   public async cancelOCRWorker() {
+    this.initLoadingWait()
     if (typeof this.worker !== 'undefined') {
       await this.worker.terminate()
     }
     await this.loadWorker()
+    this.dismissLoadingWait()
   }
 
   /**
@@ -271,6 +276,17 @@ export class PhotoService {
     })
 
     return await modal.present()
+  }
+
+  private async initLoadingWait() {
+    this.loadingWait = await this.loadingController.create({
+      message: 'Please wait...'
+    })
+    await this.loadingWait.present()
+  }
+
+  private async dismissLoadingWait() {
+    this.loadingWait.dismiss()
   }
 }
 
