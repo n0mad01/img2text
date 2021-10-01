@@ -1,7 +1,8 @@
 import { Component } from '@angular/core'
 import { Storage } from '@capacitor/storage'
 
-import { PhotoService } from '../services/photo.service'
+// import { PhotoService } from '../services/photo.service'
+import { TesseractService } from '../services/ocr/tesseract.service'
 
 @Component({
   selector: 'app-tab3',
@@ -15,7 +16,8 @@ export class Tab3Page {
   private STORAGE_OPTIONS: string = 'options'
 
   constructor(
-    public photoService: PhotoService
+    // public photoService: PhotoService
+    public tesseractService: TesseractService
   ) { }
 
   async ngOnInit() {
@@ -34,9 +36,6 @@ export class Tab3Page {
       key: this.STORAGE_OPTIONS,
       value: JSON.stringify(this.options)
     })
-    // console.log('languageSelected workerReady', this.photoService.workerReady)
-    // console.log('cancelOCRWorker start')
-    await this.photoService.cancelOCRWorker()
-    // console.log('cancelOCRWorker done')
+    await this.tesseractService.restartOCRWorker()
   }
 }

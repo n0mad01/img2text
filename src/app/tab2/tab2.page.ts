@@ -2,6 +2,7 @@ import { Component } from '@angular/core'
 import { ActionSheetController } from '@ionic/angular'
 
 import { Photo, PhotoService } from '../services/photo.service'
+import { TesseractService } from '../services/ocr/tesseract.service'
 import { SharedService } from '../services/shared.service'
 
 @Component({
@@ -16,6 +17,7 @@ export class Tab2Page {
   constructor(
     private shared: SharedService,
     public photoService: PhotoService,
+    public tesseractService: TesseractService,
     public actionSheetController: ActionSheetController) {
   }
 
@@ -42,7 +44,7 @@ export class Tab2Page {
         role: 'action',
         icon: 'cube-outline',
         handler: () => {
-          this.photoService.recognizeImage(photo.webviewPath)
+          this.tesseractService.recognizeImage(photo.webviewPath)
         }
       }, {
         text: 'Delete',
