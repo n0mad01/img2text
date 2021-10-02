@@ -1,2 +1,14 @@
 package.json
 CHANGELOG.md
+node_modules
+.github
+.vscode
+dist
+.husky
+.prettierignore
+LICENSE
+docs/
+android/
+resources/
+.idea/
+www/
