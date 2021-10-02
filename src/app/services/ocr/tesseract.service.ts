@@ -10,6 +10,7 @@ import * as Tesseract from 'tesseract.js'
 // import { Platform } from '@ionic/angular'
 import { Subscription } from 'rxjs'
 
+import { AppGlobals } from '../../shared/app.globals'
 import { SharedService } from '../shared.service'
 import { OcrOutputModalPage } from '../../modals/ocr-output-modal/ocr-output-modal.page'
 
@@ -21,18 +22,17 @@ export class TesseractService {
 
   public workerReady: boolean = false
 
-  private STORAGE_PHOTOS: string = 'photos'
-  private STORAGE_OPTIONS: string = 'options'
+  private STORAGE_OPTIONS: string = this.globals.STORAGE_OPTIONS
   private selectedLanguage: string
   private options: Object = {}
   private worker: Tesseract.Worker
-  private ocrResult: string = ''
   private ocrResultComplete: Object = {}
   private captureProgress: number = 0
   private progressSubscription: Subscription
   private loadingWait
 
   constructor(
+    private globals: AppGlobals,
     private shared: SharedService,
     public modalController: ModalController,
     public loadingController: LoadingController,

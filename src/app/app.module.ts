@@ -9,6 +9,8 @@ import { AppComponent } from './app.component'
 
 import { Clipboard } from '@ionic-native/clipboard/ngx'
 
+import { AppGlobals } from './shared/app.globals'
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -21,6 +23,7 @@ import { Clipboard } from '@ionic-native/clipboard/ngx'
     AppRoutingModule
   ],
   providers: [
+    AppGlobals,
     Clipboard,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

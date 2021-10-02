@@ -4,6 +4,7 @@ import { Filesystem, Directory } from '@capacitor/filesystem'
 import { Storage } from '@capacitor/storage'
 import { Capacitor } from '@capacitor/core'
 import { Platform } from '@ionic/angular'
+import { AppGlobals } from '../shared/app.globals'
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +12,13 @@ import { Platform } from '@ionic/angular'
 export class PhotoService {
 
   public photos: Photo[] = []
-  private platform: Platform
-  private STORAGE_PHOTOS: string = 'photos'
+  private STORAGE_PHOTOS: string = this.globals.STORAGE_PHOTOS
 
-  constructor(platform: Platform,
-
+  constructor(
+    private globals: AppGlobals,
+    public platform: Platform,
   ) {
-    this.platform = platform
+    console.log()
   }
 
   async ngOnInit() {
