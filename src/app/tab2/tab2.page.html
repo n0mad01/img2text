@@ -1,25 +1,33 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Images for extraction
-    </ion-title>
+    <ion-title> Images for extraction </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
   <ion-grid>
     <ion-row>
-      <ion-col size="3" *ngFor="let photo of photoService.photos; index as position">
-        <ion-img [src]="photo.webviewPath" (click)="showActionSheet(photo, position)"></ion-img>
+      <ion-col
+        size="3"
+        *ngFor="let photo of photoService.photos; index as position"
+      >
+        <ion-img
+          [src]="photo.webviewPath"
+          (click)="showActionSheet(photo, position)"
+        ></ion-img>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed" class="take-image-photo" data-desc="Create Contact">
+  <ion-fab
+    vertical="bottom"
+    horizontal="center"
+    slot="fixed"
+    class="take-image-photo"
+    data-desc="Create Contact"
+  >
     <ion-fab-button (click)="addPhotoToGallery()" color="medium">
       <ion-icon name="camera"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-
 </ion-content>

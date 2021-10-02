@@ -10,33 +10,44 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
   <ion-grid>
     <ion-row>
       <ion-col text-center>
-        <ion-progress-bar *ngIf="(captureProgress > 0) && (captureProgress < 1)" value="{{ captureProgress }}"></ion-progress-bar>
+        <ion-progress-bar
+          *ngIf="(captureProgress > 0) && (captureProgress < 1)"
+          value="{{ captureProgress }}"
+        ></ion-progress-bar>
         <ion-item *ngIf="ocrResultComplete.data && ocrResultComplete.data.text">
-          <ion-textarea autoGrow disabled readonly
-            value="{{ ocrResultComplete.data.text }}">
+          <ion-textarea
+            autoGrow
+            disabled
+            readonly
+            value="{{ ocrResultComplete.data.text }}"
+          >
           </ion-textarea>
         </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col text-center>
-        <ion-button expand="block" color="primary"
+        <ion-button
+          expand="block"
+          color="primary"
           *ngIf="ocrResultComplete.data && ocrResultComplete.data.text"
-          (click)="copyTextToClipboard(ocrResultComplete.data.text)">Copy Text to Clipboard</ion-button>
+          (click)="copyTextToClipboard(ocrResultComplete.data.text)"
+          >Copy Text to Clipboard</ion-button
+        >
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>
 
 <ion-footer>
   <ion-row>
     <ion-col text-center>
-      <ion-button expand="block" color="light" (click)="closeModal()">Close</ion-button>
+      <ion-button expand="block" color="light" (click)="closeModal()"
+        >Close</ion-button
+      >
     </ion-col>
   </ion-row>
 </ion-footer>

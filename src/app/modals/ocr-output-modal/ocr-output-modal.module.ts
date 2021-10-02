@@ -13,8 +13,8 @@ import { OcrOutputModalPage } from './ocr-output-modal.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    OcrOutputModalPageRoutingModule
+    OcrOutputModalPageRoutingModule,
   ],
-  declarations: [OcrOutputModalPage]
+  declarations: [OcrOutputModalPage],
 })
 export class OcrOutputModalPageModule {}
